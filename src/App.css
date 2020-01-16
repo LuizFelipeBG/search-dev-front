@@ -1,0 +1,25 @@
+.mainContainer {
+    display: flex;
+    max-width: 1200px;
+    flex-direction: row;
+    margin: 0 auto;
+    padding: 60px;
+    align-items: flex-start
+}
+
+.mainContainer main{
+    margin-left: 30px
+}
+
+@media (max-width: 1000px) {
+    .mainContainer {
+        flex-direction: column
+    }
+    .mainContainer main {
+        margin-left: 0;
+        margin-top: 30px;
+    }
+    .mainContainer aside {
+        width: 100%
+    }
+}
