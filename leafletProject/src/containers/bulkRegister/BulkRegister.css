@@ -1,0 +1,22 @@
+/* Form */
+
+.dimenstionsBlock {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* bulk resgister page */
+
+div.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+small.error-message {
+  color: darkred;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+}
