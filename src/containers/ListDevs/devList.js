@@ -1,12 +1,12 @@
 import React from 'react'
 import './main.css'
 
-export const DevList = ({allUsers}) => {
+export const DevList = React.memo(({allUsers}) => {
     return (
         <main>
           <ul>
-            {allUsers.map(({avatar_url, name, techs, bio, user_profile, id}) =>(
-              <li className="dev-item" key={id}>
+            {allUsers.map(({avatar_url, name, techs, bio, user_profile, _id}) =>(
+              <li className="dev-item" key={_id}>
               <header>
                 <img src={avatar_url} alt={name} />
                 <div className="user-info">
@@ -21,4 +21,4 @@ export const DevList = ({allUsers}) => {
           </ul>
         </main>
     )
-}
+})
