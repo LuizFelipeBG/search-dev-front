@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const api = axios.create({
-    baseURL: "https://search-devs.herokuapp.com"
-})
+const baseURL = process.env.API_URI || "https://search-devs.herokuapp.com"
+
+const api = axios.create({ baseURL })
 
 export default api

@@ -13,10 +13,10 @@ const useFetchingDevs = () => {
 
     const filterDevs = useMemo(() => async (paramsToFilter) => {
         try {
-            const devs = await api.get('/devs', paramsToFilter)
+            const devs = await api.get('/search', {params: paramsToFilter})
             setDevsFiltered(devs.data)
             return devs.data
-        }catch(err) {
+        } catch (err) {
             console.log('Error in useFetchingDevs.js ', err)
         }
     }, [setDevsFiltered, devsFiltered])
