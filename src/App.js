@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RegisterDev } from './containers/Form/devForm'
 import { DevList } from './containers/ListDevs/devList'
 import './global.css'
@@ -12,7 +13,7 @@ const App = () => {
   // PAGE CONFIG
   const [shouldBeInRegisterPage, setshouldBeInRegisterPage] = useState(true)
 
-  useEffect(() => { window.innerWidth < 800 && setshouldBeInRegisterPage(false) }, [])
+  // useEffect(() => { window.innerWidth < 800 && setshouldBeInRegisterPage(false) }, [])
 
   // PERMISSION TO GET COORDS
   const userCoords = useCoodsPermissions()
@@ -29,6 +30,7 @@ const App = () => {
 
   return (
     <React.Fragment>
+      {JSON.stringify(userCoords, undefined, 2)}
       <Header shouldBeInRegisterPage={shouldBeInRegisterPage} setshouldBeInRegisterPage={setshouldBeInRegisterPage} />
       {pageComponent}
     </React.Fragment>

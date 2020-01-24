@@ -1,0 +1,12 @@
+.input-above-map-block {
+    position: absolute;
+    bottom: 15px;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.input-above-map {
+    
+}

@@ -3,7 +3,7 @@ import * as L from 'leaflet'
 
 import Map from "../components/map/Map";
 import { getAreaByZoom } from '../utils';
-// import api from '../service/client';
+import './MapPage.css';
 
 const intialCenter = [-20.279078, -40.294805]
 const normalizeImageByDevData = (addLayerInMapFunc) => dev => {
@@ -26,9 +26,9 @@ export default function MapPAge(props) {
 
     const addImageOverLay = (imageOverlayProps) => {
         const { id: ioId,
-            imagePath, 
+            imagePath,
             lat = -20.306705, long = -40.351330 } = imageOverlayProps
-        
+
         const bounds = getAreaByZoom(mapRef.current.map.getZoom())
 
         const imageBound = L.latLng(lat, long).toBounds(bounds)
@@ -36,11 +36,10 @@ export default function MapPAge(props) {
         _imageOverLay.on('click', function (e) { console.log('I have been clicked ', e, this) })
         _imageOverLay.addTo(mapRef.current.map)
     }
-
-    React.useEffect(() => {
+    const getAndShowDevsByTechAndLocation = () => {
         const missingCoords = !props.lat || !props.lng
-        if (missingCoords) return 
-        
+        if (missingCoords) return
+
         const handleDevs = async () => {
             setCenter([props.lat, props.lng])
             try {
@@ -49,7 +48,7 @@ export default function MapPAge(props) {
                     long: props.lng,
                     lat: props.lat
                 })
-                
+
                 devsFetched.map(normalizeImageByDevData(addImageOverLay))
             } catch (err) {
                 props.devs.data.map(normalizeImageByDevData(addImageOverLay))
@@ -57,7 +56,10 @@ export default function MapPAge(props) {
         }
         handleDevs()
 
-    }, [props.lat, props.lng])
+    }
+
+    // TODO: Remove it.
+    React.useEffect(() => { getAndShowDevsByTechAndLocation() }, [props.lat, props.lng])
 
 
     const coordInputs = () => {
@@ -74,6 +76,9 @@ export default function MapPAge(props) {
         <div>
             {coordInputs()}
             <Map ref={mapRef} center={center} />
+            <div className='input-above-map-block'>
+                <input className='input-above-map' />
+            </div>
         </div>
     )
 
