@@ -3,7 +3,7 @@ import * as L from 'leaflet'
 import { getAreaByZoom } from '../../utils';
 
 const style = {
-  height: '600px'
+  height: '99.5vh'
 }
 
 export default class Map extends React.Component {
@@ -37,7 +37,14 @@ export default class Map extends React.Component {
         }
       })
     });
+  }
 
+  componentDidUpdate(prev) {
+    // when center (state coords changes)
+    if (prev.center[0] === this.props.center[0] && prev.center[1] === this.props.center[1]) return
+    const newCenter = [this.props.center[0], this.props.center[1]]
+    
+    this.map.flyTo(new L.latLng(newCenter[0], newCenter[1]), 13.5, {duration: 1.9})
   }
 
   render() {

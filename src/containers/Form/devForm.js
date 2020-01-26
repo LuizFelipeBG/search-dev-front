@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import './SideBar.css'
 import { registerAndInsertNewDev } from '../../service/registerAndInsertNewDev';
-export const RegisterDev = ({ setAllUsers, lat = '', lng = '' }) => {
+export const RegisterDev = (props) => {
+  const { setAllUsers, lat = '', lng = '' } = props
   const latRef = useRef(null)
   const lngRef = useRef(null)
 
@@ -31,11 +32,11 @@ export const RegisterDev = ({ setAllUsers, lat = '', lng = '' }) => {
         <div className="input-group">
           <div className="input-block">
             <label>Latitude</label>
-            <input ref={latRef} type='text' required></input>
+            <input ref={latRef} type='text' onKeyDown={(e) => props.handleManualCoords(e, latRef, lngRef)} required></input>
           </div>
           <div className="input-block">
             <label>Longitude</label>
-            <input ref={lngRef} type='text' required></input>
+            <input ref={lngRef} type='text' onKeyDown={(e) => props.handleManualCoords(e, latRef, lngRef)} required></input>
           </div>
         </div>
         <button type="submit">Salvar</button>

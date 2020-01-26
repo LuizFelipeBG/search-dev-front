@@ -6,6 +6,7 @@ import { getAreaByZoom } from '../utils';
 import './MapPage.css';
 
 const intialCenter = [-20.279078, -40.294805]
+// const intialCenter = [-20.1293824, -40.3193856]
 const normalizeImageByDevData = (addLayerInMapFunc) => dev => {
     const imageOverlayProps = {
         id: dev._id,
@@ -36,18 +37,25 @@ export default function MapPAge(props) {
         _imageOverLay.on('click', function (e) { console.log('I have been clicked ', e, this) })
         _imageOverLay.addTo(mapRef.current.map)
     }
-    const getAndShowDevsByTechAndLocation = () => {
+
+    const filterAndShowDevs = (filtersSeparatedByVig) => {
         const missingCoords = !props.lat || !props.lng
         if (missingCoords) return
 
         const handleDevs = async () => {
-            setCenter([props.lat, props.lng])
+            const techs = filtersSeparatedByVig.split(',').map(item => item.trim())
+            const paramstoFilter = {
+                techs,
+                long: props.lng,
+                lat: props.lat
+            }
+            mapRef.current.map.eachLayer(layer => {
+                if (layer.options.ioId) {
+                    layer.remove()
+                }
+            })
             try {
-                const devsFetched = await props.devs.get({
-                    techs: ['react'],
-                    long: props.lng,
-                    lat: props.lat
-                })
+                const devsFetched = await props.devs.get(paramstoFilter)
 
                 devsFetched.map(normalizeImageByDevData(addImageOverLay))
             } catch (err) {
@@ -58,17 +66,21 @@ export default function MapPAge(props) {
 
     }
 
-    // TODO: Remove it.
-    React.useEffect(() => { getAndShowDevsByTechAndLocation() }, [props.lat, props.lng])
-
+    React.useEffect(() => {
+        const missingCoords = !props.lat || !props.lng
+        
+        if (!missingCoords) {
+            setCenter([props.lat, props.lng])
+        }
+    }, [props.lat, props.lng])
 
     const coordInputs = () => {
         const coordsPredefineds = props.lat && props.lng
         if (!coordsPredefineds) return (
-            <React.Fragment>
-                <input ref={latRef} placeholder='Digite LATITUDE' />
-                <input ref={lngRef} placeholder='Digite LONGITUDE' />
-            </React.Fragment>)
+            <div className='above-map-block coords-wrapper'>
+                <input ref={latRef} placeholder='Digite LATITUDE' onKeyDown={(e) => props.handleManualCoords(e, latRef, lngRef)} />
+                <input ref={lngRef} placeholder='Digite LONGITUDE' onKeyDown={(e) => props.handleManualCoords(e, latRef, lngRef)} />
+            </div>)
 
     }
 
@@ -76,8 +88,14 @@ export default function MapPAge(props) {
         <div>
             {coordInputs()}
             <Map ref={mapRef} center={center} />
-            <div className='input-above-map-block'>
-                <input className='input-above-map' />
+            <div className='above-map-block search-wrapper'>
+                <input placeholder='FILTRAR...' onKeyDown={async (e) => {
+                    if (e.keyCode === 13) {
+                        e.currentTarget.blur()
+                        // await filterAndShowDevs('react')
+                        await filterAndShowDevs(e.currentTarget.value)
+                    }
+                }} />
             </div>
         </div>
     )

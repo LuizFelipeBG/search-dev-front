@@ -1,5 +1,4 @@
-// import React, { useEffect, useState } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RegisterDev } from './containers/Form/devForm'
 import { DevList } from './containers/ListDevs/devList'
 import './global.css'
@@ -13,24 +12,35 @@ const App = () => {
   // PAGE CONFIG
   const [shouldBeInRegisterPage, setshouldBeInRegisterPage] = useState(true)
 
-  // useEffect(() => { window.innerWidth < 800 && setshouldBeInRegisterPage(false) }, [])
+  useEffect(() => { window.innerWidth < 800 && setshouldBeInRegisterPage(false) }, [])
 
   // PERMISSION TO GET COORDS
-  const userCoords = useCoodsPermissions()
+  const { userCoords, setCoords } = useCoodsPermissions()
 
   // DATA FETCH CONFIG
   const { allUsers, setAllUsers, devs } = useFetchingDevs()
 
+  const handleManualCoords = (e, latRef, lngRef) => {
+    const lat = latRef.current.value
+    const lng = lngRef.current.value
+    
+    if (e.keyCode === 13 && lat && lng) {
+      setCoords({ lat, lng })
+      // in case of overwriting bad geolocation services
+      localStorage.setItem('manual_coords', JSON.stringify({ lat, lng }))
+    }
+  }
+  const coordsProps = { ...userCoords, handleManualCoords }
+
   const pageComponent = shouldBeInRegisterPage ? (
     <div className='mainContainer' >
-      <RegisterDev setAllUsers={setAllUsers} {...userCoords} />
+      <RegisterDev setAllUsers={setAllUsers} {...coordsProps} />
       <DevList allUsers={allUsers} />
     </div >
-  ) : <MapPAge {...userCoords} devs={devs} />
+  ) : <MapPAge {...coordsProps} devs={devs} />
 
   return (
     <React.Fragment>
-      {JSON.stringify(userCoords, undefined, 2)}
       <Header shouldBeInRegisterPage={shouldBeInRegisterPage} setshouldBeInRegisterPage={setshouldBeInRegisterPage} />
       {pageComponent}
     </React.Fragment>
