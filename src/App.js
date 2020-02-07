@@ -1,33 +1,51 @@
-import React, {useEffect, useState} from 'react';
-import api from './service/client'
-import {RegisterDev} from './containers/Form/devForm'
-import {DevList} from './containers/ListDevs/devList'
+import React, { useEffect, useState } from 'react';
+import { RegisterDev } from './containers/Form/devForm'
+import { DevList } from './containers/ListDevs/devList'
 import './global.css'
 import './App.css'
+import MapPAge from './pages/MapPage';
+import { useCoodsPermissions } from './utils';
+import Header from './components/header/Header';
+import useFetchingDevs from './service/useFetchingDevs';
 
 const App = () => {
-  const [allUsers, setAllUsers]  = useState([])
+  // PAGE CONFIG
+  const [shouldBeInRegisterPage, setshouldBeInRegisterPage] = useState(true)
 
-  useEffect(() => {
-    const getUser = async () => {
-      const users = await api.get('/devs')
-      setAllUsers(users.data.reverse())
-      return users
-    } 
-    getUser()
-  },[])
+  useEffect(() => { window.innerWidth < 800 && setshouldBeInRegisterPage(false) }, [])
 
-  const getData =async (obj) => {
-    const setUser = await api.post('/devs', obj)
-    setAllUsers([setUser.data, ...allUsers])
+  // PERMISSION TO GET COORDS
+  const { userCoords, setCoords } = useCoodsPermissions()
+
+  // DATA FETCH CONFIG
+  const { allUsers, setAllUsers, devs } = useFetchingDevs()
+
+  const handleManualCoords = (e, latRef, lngRef) => {
+    const lat = latRef.current.value
+    const lng = lngRef.current.value
+    
+    if (e.keyCode === 13 && lat && lng) {
+      setCoords({ lat, lng })
+      // in case of overwriting bad geolocation services
+      localStorage.setItem('manual_coords', JSON.stringify({ lat, lng }))
+    }
   }
-  
-    return (
-      <div className='mainContainer'>
-        <RegisterDev getData={getData}/>
-        <DevList allUsers={allUsers} />
-      </div>
-    );
-  }
+  const coordsProps = { ...userCoords, handleManualCoords }
+
+  const pageComponent = shouldBeInRegisterPage ? (
+    <div className='mainContainer' >
+      <RegisterDev setAllUsers={setAllUsers} {...coordsProps} />
+      <DevList allUsers={allUsers} />
+    </div >
+  ) : <MapPAge {...coordsProps} devs={devs} />
+
+  return (
+    <React.Fragment>
+      <Header shouldBeInRegisterPage={shouldBeInRegisterPage} setshouldBeInRegisterPage={setshouldBeInRegisterPage} />
+      {pageComponent}
+    </React.Fragment>
+  )
+
+}
 
 export default App;
