@@ -61,3 +61,17 @@ li.dev-item a:hover {
         grid-template-columns: 1fr
     }
 }
+button.remove-dev {
+    height: 20px;
+    width: 60px;
+    border-radius: 3px;
+    color: white;
+    font-size: 13;
+    font-weight: bold;
+    background-color: #7d40e7;
+}
+div.button-div{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}

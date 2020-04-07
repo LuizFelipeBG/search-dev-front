@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as L from 'leaflet'
+import Modal from 'react-responsive-modal'
 
 import Map from "../components/map/Map";
 import { getAreaByZoom } from '../utils';
@@ -18,23 +19,30 @@ const normalizeImageByDevData = (addLayerInMapFunc) => dev => {
 }
 
 export default function MapPAge(props) {
-
-    const [center, setCenter] = React.useState(intialCenter)
+    const { allUsers } = props
+    const [center, setCenter] = useState(intialCenter)
+    const [openModal, setOpenModal] = useState(false)
     const latRef = React.useRef(null)
     const lngRef = React.useRef(null)
     const mapRef = React.useRef(null)
+    const [userModal, setUserModal] = useState({})
 
+    const getUserInfo = (id) => {
+        setOpenModal(true)
+        const userAllInfo = allUsers.filter(item => item._id === id)
+        setUserModal(...userAllInfo)
+    }
 
     const addImageOverLay = (imageOverlayProps) => {
         const { id: ioId,
             imagePath,
-            lat = -20.306705, long = -40.351330 } = imageOverlayProps
+            lat = -20.306705, long = -40.351330,  } = imageOverlayProps
 
         const bounds = getAreaByZoom(mapRef.current.map.getZoom())
 
         const imageBound = L.latLng(lat, long).toBounds(bounds)
-        let _imageOverLay = L.imageOverlay(imagePath, imageBound, { ioId, opacity: 0.74, interactive: true })
-        _imageOverLay.on('click', function (e) { console.log('I have been clicked ', e, this) })
+        let _imageOverLay = L.imageOverlay(imagePath, imageBound, { ioId, opacity: 0.9, interactive: true })
+        _imageOverLay.on('click',(e) => getUserInfo(ioId) ,this)
         _imageOverLay.addTo(mapRef.current.map)
     }
 
@@ -88,12 +96,27 @@ export default function MapPAge(props) {
         <div>
             {coordInputs()}
             <Map ref={mapRef} center={center} />
+            <Modal open={openModal} onClose={() => setOpenModal(false)} center className="modal">
+                {openModal ? 
+                <div className="main-container">
+                    <img src={userModal.avatar_url} alt={userModal.name} />
+                    <div className="user-info">
+                    <strong>{userModal.name}: </strong>
+                    <a href={userModal.user_profile} target="_blank">Perfil do GitHub </a>
+                    </div>
+                    <div className="bio-info">
+                        <strong>Bio: </strong><p>{userModal.bio}</p>
+                    </div> 
+                </div>
+                : 
+                null}
+            </Modal>
             <div className='above-map-block search-wrapper'>
-                <input placeholder='FILTRAR...' onKeyDown={async (e) => {
+                <input className="input-filter" placeholder='FILTRAR...' onKeyDown={async (e) => {
                     if (e.keyCode === 13) {
                         e.currentTarget.blur()
                         // await filterAndShowDevs('react')
-                        await filterAndShowDevs(e.currentTarget.value)
+                        await filterAndShowDevs(e.currentTarget.value.toLowerCase())
                     }
                 }} />
             </div>
