@@ -1,7 +1,9 @@
 import React from 'react'
+import {deleteUser} from '../../service/registerAndInsertNewDev'
 import './main.css'
 
-export const DevList = React.memo(({allUsers}) => {
+export const DevList = React.memo(({allUsers, setAllUsers}) => {
+
     return (
         <main>
           <ul>
@@ -14,8 +16,10 @@ export const DevList = React.memo(({allUsers}) => {
                   <span>{techs.join(', ')}</span>
                 </div>
               </header>
-              <p>{bio}</p>
-              <a href={user_profile}>Acessar Perfil do GitHub </a>
+              <div className="button-div">
+                <a href={user_profile}>Acessar Perfil do GitHub </a>
+                <button className="remove-dev" onClick={() => deleteUser(_id,allUsers, setAllUsers)}>Remover</button>
+              </div>
             </li>
             ))}
           </ul>
