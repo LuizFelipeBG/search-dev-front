@@ -35,9 +35,9 @@ const App = () => {
   const pageComponent = shouldBeInRegisterPage ? (
     <div className='mainContainer' >
       <RegisterDev setAllUsers={setAllUsers} {...coordsProps} />
-      <DevList allUsers={allUsers} />
+      <DevList allUsers={allUsers} setAllUsers={setAllUsers}/>
     </div >
-  ) : <MapPAge {...coordsProps} devs={devs} />
+  ) : <MapPAge {...coordsProps} allUsers={allUsers} devs={devs} />
 
   return (
     <React.Fragment>
