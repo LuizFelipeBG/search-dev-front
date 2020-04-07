@@ -1,0 +1,7 @@
+button.button-header{
+    height: 25px;
+    width: 20vh;
+    background-color: #7d40e7;
+    color: white;
+    font-weight: bold;
+}
