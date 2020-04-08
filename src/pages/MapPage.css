@@ -30,7 +30,7 @@ div.main-container img{
     padding-bottom: 10px;
     width: 50vh;
 }
-.user-info{
+.map-user-info div{
     display: flex;
     flex-direction: row;
     padding-bottom: 5px;

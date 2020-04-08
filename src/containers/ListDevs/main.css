@@ -40,6 +40,10 @@ li.dev-item header .user-info{
      color: #999999;
      margin-top: 2px
 }
+.user-info div{
+    display: flex;
+    flex-direction: column ; 
+}
 li.dev-item p {
     color: #666666;
     font-size: 14px;

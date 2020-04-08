@@ -100,7 +100,7 @@ export default function MapPAge(props) {
                 {openModal ? 
                 <div className="main-container">
                     <img src={userModal.avatar_url} alt={userModal.name} />
-                    <div className="user-info">
+                    <div className="map-user-info">
                     <strong>{userModal.name}: </strong>
                     <a href={userModal.user_profile} target="_blank">Perfil do GitHub </a>
                     </div>
