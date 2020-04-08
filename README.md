@@ -25,9 +25,6 @@ yarn start
 
 Read [Luiz Fellype Cassago] (https://github.com/LuizFellype)
 
-## Version control
-
-We use [SemVer] (http://semver.org/) to version. For available versions, see the [tags in this repository] (https://github.com/your/project/tags).
 
 ## License
 
