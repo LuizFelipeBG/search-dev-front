@@ -20,4 +20,28 @@
     display: flex;
     justify-content: center;
 }
-
+.input-filter {
+    height: 25px;
+    border-radius: 3px;
+    font-size: 15px;
+}
+div.main-container img{
+    height: 50vh;
+    padding-bottom: 10px;
+    width: 50vh;
+}
+.map-user-info div{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 5px;
+}
+div.user-info a{
+    padding-left: 5px;
+}
+.bio-info{
+    display: flex;
+    flex-direction: row;
+}
+div.bio-info p{
+    padding-left: 5px;
+}

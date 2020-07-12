@@ -40,6 +40,10 @@ li.dev-item header .user-info{
      color: #999999;
      margin-top: 2px
 }
+.user-info div{
+    display: flex;
+    flex-direction: column ; 
+}
 li.dev-item p {
     color: #666666;
     font-size: 14px;
@@ -60,4 +64,18 @@ li.dev-item a:hover {
     main ul {
         grid-template-columns: 1fr
     }
+}
+button.remove-dev {
+    height: 20px;
+    width: 60px;
+    border-radius: 3px;
+    color: white;
+    font-size: 13;
+    font-weight: bold;
+    background-color: #7d40e7;
+}
+div.button-div{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
 }

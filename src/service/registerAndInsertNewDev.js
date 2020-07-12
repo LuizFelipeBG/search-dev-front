@@ -13,3 +13,9 @@ export const registerAndInsertNewDev = async (event, { lng, lat }, setAllUsers) 
     const devRegistered = await api.post('/devs', obj)
     setAllUsers(currentDevs => [devRegistered.data, ...currentDevs])
 }
+
+export const deleteUser = async (id,allUsers, setAllUsers) => {
+    await api.delete(`/devs/${id}/delete`)
+    const removeItem = allUsers.filter(item => item._id !== id)
+    setAllUsers(() => [...removeItem])
+}
